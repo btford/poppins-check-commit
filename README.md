@@ -1,17 +1,18 @@
 # poppins-check-commit
 
 A [Mary Poppins](https://github.com/btford/mary-poppins) plugin for checking commit message format.
+It was designed to enforce [this commit message format](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#), but it can be used with other conventions as well.
 Requires the [`pr-checklist`](https://github.com/btford/poppins-pr-checklist) plugin.
 
 
 ## Install
 
-`npm install poppins-pr-checklist`
+`npm install poppins-check-commit`
 
 
 ## Configure
 
-To use this plugin, you need to load it in your config file with [`couldYouPlease`]():
+To use this plugin, you need to load it in your config file with `couldYouPlease`:
 
 
 ```javascript
