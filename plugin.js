@@ -6,10 +6,12 @@ module.exports = function (poppins) {
   }
 
   pluggins.checkCommit = {
-    message: "PR's commit messages follow the [commit message format](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#)",
-    condition: function (data) {
+    message: "PR's commit messages follow the [commit message format]" +
+        "(https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format)",
+
+    condition: function (pr) {
       return poppins.
-        getCommits(data.number).
+        getCommits(pr.number).
         then(function (commits) {
           return commits.reduce(function (state, commit) {
             return state && pluggins.checkCommit.check(commit.message);
