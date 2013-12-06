@@ -5,7 +5,7 @@ module.exports = function (poppins) {
     throw new Error('poppins-check-commit requires poppins-pr-checklist to be loaded first');
   }
 
-  pluggins.checkCommit = {
+  plugins.checkCommit = {
     message: "PR's commit messages follow the [commit message format]" +
         "(https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#commit-message-format)",
 
@@ -28,5 +28,5 @@ module.exports = function (poppins) {
     regex: /^(.*)\((.*)\)\:\s(.*)/
   };
 
-  plugins.prChecklist.checks.push(pluggins.checkCommit);
+  plugins.prChecklist.checks.push(plugins.checkCommit);
 };
