@@ -13,8 +13,8 @@ module.exports = function (poppins) {
       return poppins.
         getCommits(pr.number).
         then(function (commits) {
-          return commits.reduce(function (state, commit) {
-            return state && plugins.checkCommit.check(commit.message);
+          return commits.reduce(function (state, data) {
+            return state && plugins.checkCommit.check(data.commit);
           }, true);
         });
     },
