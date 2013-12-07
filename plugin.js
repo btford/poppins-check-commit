@@ -14,13 +14,13 @@ module.exports = function (poppins) {
         getCommits(pr.number).
         then(function (commits) {
           return commits.reduce(function (state, commit) {
-            return state && pluggins.checkCommit.check(commit.message);
+            return state && plugins.checkCommit.check(commit.message);
           }, true);
         });
     },
 
     check: function commit (commit) {
-      var regex = pluggins.checkCommit.regex;
+      var regex = plugins.checkCommit.regex;
       var match = commit.message.match(regex);
       return !match || !match[1] || !match[3];
     },
