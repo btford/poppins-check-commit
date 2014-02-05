@@ -1,3 +1,5 @@
+var util = require('util');
+
 module.exports = function (poppins) {
   var plugins = poppins.plugins;
 
@@ -11,22 +13,54 @@ module.exports = function (poppins) {
 
     condition: function (pr) {
       return poppins.
-        getCommits(pr.number).
-        then(function (commits) {
-          return commits.reduce(function (state, data) {
-            return state && plugins.checkCommit.check(data.commit);
-          }, true);
-        });
+          getCommits(pr.number).
+          then(function (commits) {
+            return commits.reduce(function (state, data) {
+              return state && plugins.checkCommit.check(data.commit);
+            }, true);
+          });
     },
 
-    check: function commit (commit) {
-      var regex = plugins.checkCommit.regex;
-      var match = commit.message.match(regex);
-      return !match || !match[1] || !match[3];
-    },
-
-    regex: /^(.*)\((.*)\)\:\s(.*)/
+    check: getProblemsWithMessage,
   };
 
   plugins.prChecklist.checks.push(plugins.checkCommit);
 };
+
+
+var MAX_LENGTH = 100;
+var PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\-\*/]*)\))?\: (.*)$/;
+var TYPES = [
+  'feat',
+  'fix',
+  'docs',
+  'style',
+  'refactor',
+  'perf',
+  'test',
+  'chore',
+  'revert'
+];
+
+
+function getProblemsWithMessage (message) {
+  message = message.split('\n')[0];
+
+  if (message.length > MAX_LENGTH) {
+    return util.format('message is longer than %d characters', MAX_LENGTH);
+  }
+
+  var match = PATTERN.exec(message);
+
+  if (!match) {
+    return 'does not match "<type>(<scope>): <subject>"';
+  }
+
+  var type = match[1];
+
+  if (TYPES.indexOf(type) === -1) {
+    return util.format('"%s" is not an allowed type', type);
+  }
+
+  return '';
+}
