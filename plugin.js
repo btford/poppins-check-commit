@@ -15,9 +15,11 @@ module.exports = function (poppins) {
       return poppins.
           getCommits(pr.number).
           then(function (commits) {
-            return commits.reduce(function (state, data) {
-              return state && plugins.checkCommit.check(data.commit);
-            }, true);
+            var problem;
+            commits.some(function (data) {
+              return (problem = plugins.checkCommit.check(data.commit)).length > 0;
+            });
+            return problem;
           });
     },
 
