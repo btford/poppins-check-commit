@@ -1,6 +1,6 @@
 {
   "name": "poppins-check-commit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "mary-poppins plugin for checking commit message format",
   "main": "plugin.js",
   "scripts": {
