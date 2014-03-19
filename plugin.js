@@ -17,13 +17,13 @@ module.exports = function (poppins) {
           then(function (commits) {
             var problem;
             commits.some(function (data) {
-              return (problem = plugins.checkCommit.check(data.commit)).length > 0;
+              return (problem = plugins.checkCommit.check(data.commit.message)).length > 0;
             });
             return problem;
           });
     },
 
-    check: getProblemsWithMessage,
+    check: getFeedbackForMessage,
   };
 
   plugins.prChecklist.checks.push(plugins.checkCommit);
@@ -45,24 +45,29 @@ var TYPES = [
 ];
 
 
-function getProblemsWithMessage (message) {
+function getFeedbackForMessage (message) {
   message = message.split('\n')[0];
 
   if (message.length > MAX_LENGTH) {
-    return util.format('message is longer than %d characters', MAX_LENGTH);
+    return util.format('`%s` is longer than %d characters', message, MAX_LENGTH);
   }
 
   var match = PATTERN.exec(message);
 
   if (!match) {
-    return 'does not match "<type>(<scope>): <subject>"';
+    return util.format('`%s` does not match `<type>(<scope>): <subject>`', message);
   }
 
   var type = match[1];
 
   if (TYPES.indexOf(type) === -1) {
-    return util.format('"%s" is not an allowed type', type);
+    return util.format('`%s` is not an allowed type; allowed types are %s.',
+        type, TYPES.map(backtick).join(', '));
   }
 
   return '';
+}
+
+function backtick (str) {
+  return '`' + str + '`';
 }
